@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Globals">
     <WebView2DispatchAdapterNamespace>SimpleMVVMHelper</WebView2DispatchAdapterNamespace>
   </PropertyGroup>
@@ -18,12 +18,20 @@
 	  <PackageTags>MVVM</PackageTags>
 	  <PackageId>SimpleMVVMHelper</PackageId>
 	  <Product>SimpleMVVMHelper</Product>
+	  <Version>1.0.2</Version>
+	  <PackageLicenseExpression> GPL-3.0-only</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240829007" />
   </ItemGroup>
+	
   <ItemGroup>
+	  <None Update="runtimes\**\WebView2Loader.dll">
+		  <Pack>true</Pack>
+		  <PackagePath>runtimes\$(RuntimeIdentifier)\native\</PackagePath>
+	  </None>
+	  
     <None Update="readme.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
