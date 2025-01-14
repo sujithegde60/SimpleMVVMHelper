@@ -1,41 +1,68 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup Label="Globals">
-    <WebView2DispatchAdapterNamespace>SimpleMVVMHelper</WebView2DispatchAdapterNamespace>
-  </PropertyGroup>
-  <PropertyGroup>
-    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-    <RootNamespace>MVVMHelper</RootNamespace>
-    <RuntimeIdentifiers Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 8">win-x86;win-x64;win-arm64</RuntimeIdentifiers>
-    <RuntimeIdentifiers Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; 8">win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
-    <UseWinUI>true</UseWinUI>
-	  <WindowsSdkPackageVersion>10.0.19041.38</WindowsSdkPackageVersion>
-	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <Title>MVVM helper functions for .net projects with Change notifier and relay command</Title>
-	  <Authors>Sujit_Hegde</Authors>
-	  <Description>MVVMHelper provides utility classes to simplify the implementation of the MVVM (Model-View-ViewModel) pattern in .NET applications</Description>
-	  <PackageReadmeFile>README.md</PackageReadmeFile>
-	  <PackageTags>MVVM</PackageTags>
-	  <PackageId>SimpleMVVMHelper</PackageId>
-	  <Product>SimpleMVVMHelper</Product>
-	  <Version>1.0.2</Version>
-	  <PackageLicenseExpression> GPL-3.0-only</PackageLicenseExpression>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240829007" />
-  </ItemGroup>
-	
-  <ItemGroup>
-	  <None Update="runtimes\**\WebView2Loader.dll">
-		  <Pack>true</Pack>
-		  <PackagePath>runtimes\$(RuntimeIdentifier)\native\</PackagePath>
-	  </None>
-	  
-    <None Update="readme.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-  
+	<PropertyGroup Label="Globals">
+		<WebView2DispatchAdapterNamespace>SimpleMVVMHelper</WebView2DispatchAdapterNamespace>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+		<RootNamespace>MVVMHelper</RootNamespace>
+		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+		<UseWinUI>true</UseWinUI>
+		<WindowsSdkPackageVersion>10.0.19041.38</WindowsSdkPackageVersion>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>MVVM helper functions for .NET projects with Change notifier and relay command</Title>
+		<Authors>Sujit_Hegde</Authors>
+		<Description>MVVMHelper provides utility classes to simplify the implementation of the MVVM (Model-View-ViewModel) pattern in .NET applications</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>MVVM</PackageTags>
+		<PackageId>SimpleMVVMHelper</PackageId>
+		<Product>SimpleMVVMHelper</Product>
+		<Version>1.0.2</Version>
+		<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240829007" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Include WebView2Loader.dll files for packaging -->
+		<None Include="$(OutputPath)runtimes\win-x86\native\WebView2Loader.dll">
+			<Pack>true</Pack>
+			<PackagePath>lib/net8.0-windows10.0.19041/SimpleMVVMHelper/runtimes/win-x86/native/</PackagePath>
+		</None>
+		<None Include="$(OutputPath)runtimes\win-x64\native\WebView2Loader.dll">
+			<Pack>true</Pack>
+			<PackagePath>lib/net8.0-windows10.0.19041/SimpleMVVMHelper/runtimes/win-x64/native/</PackagePath>
+		</None>
+		<None Include="$(OutputPath)runtimes\win-arm64\native\WebView2Loader.dll">
+			<Pack>true</Pack>
+			<PackagePath>lib/net8.0-windows10.0.19041/SimpleMVVMHelper/runtimes/win-arm64/native/</PackagePath>
+		</None>
+		<None Update="README.md">
+			<Pack>True</Pack>
+			<PackagePath>/</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<Target Name="PrepareRuntimes" BeforeTargets="Build">
+		<!-- Create runtime directories in output path -->
+		<MakeDir Directories="$(OutputPath)runtimes\win-x86\native" />
+		<MakeDir Directories="$(OutputPath)runtimes\win-x64\native" />
+		<MakeDir Directories="$(OutputPath)runtimes\win-arm64\native" />
+	</Target>
+
+	<Target Name="CopyWebView2LoaderDlls" AfterTargets="Build">
+		<!-- Copy WebView2Loader.dll to runtime directories -->
+		<Copy SourceFiles="$(OutputPath)WebView2Loader.dll"
+			  DestinationFolder="$(OutputPath)runtimes\win-x86\native"
+			  Condition="'$(RuntimeIdentifier)' == 'win-x86'" />
+		<Copy SourceFiles="$(OutputPath)WebView2Loader.dll"
+			  DestinationFolder="$(OutputPath)runtimes\win-x64\native"
+			  Condition="'$(RuntimeIdentifier)' == 'win-x64'" />
+		<Copy SourceFiles="$(OutputPath)WebView2Loader.dll"
+			  DestinationFolder="$(OutputPath)runtimes\win-arm64\native"
+			  Condition="'$(RuntimeIdentifier)' == 'win-arm64'" />
+	</Target>
 </Project>
