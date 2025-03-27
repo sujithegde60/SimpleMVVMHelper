@@ -5,7 +5,7 @@
 ## Features
 
 - **ChangeNotifier**:
-  - Implements `INotifyPropertyChanged`.
+  - Implements `INotifyPropertyChanged`,`INotifyPropertyChanging` .
   - Simplifies property change notification for view models.
   
 - **RelayCommand**:
