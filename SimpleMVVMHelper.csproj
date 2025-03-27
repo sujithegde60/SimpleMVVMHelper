@@ -17,7 +17,7 @@
 		<PackageTags>MVVM</PackageTags>
 		<PackageId>SimpleMVVMHelper</PackageId>
 		<Product>SimpleMVVMHelper</Product>
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 		<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
 	</PropertyGroup>
 
@@ -55,14 +55,8 @@
 
 	<Target Name="CopyWebView2LoaderDlls" AfterTargets="Build">
 		<!-- Copy WebView2Loader.dll to runtime directories -->
-		<Copy SourceFiles="$(OutputPath)WebView2Loader.dll"
-			  DestinationFolder="$(OutputPath)runtimes\win-x86\native"
-			  Condition="'$(RuntimeIdentifier)' == 'win-x86'" />
-		<Copy SourceFiles="$(OutputPath)WebView2Loader.dll"
-			  DestinationFolder="$(OutputPath)runtimes\win-x64\native"
-			  Condition="'$(RuntimeIdentifier)' == 'win-x64'" />
-		<Copy SourceFiles="$(OutputPath)WebView2Loader.dll"
-			  DestinationFolder="$(OutputPath)runtimes\win-arm64\native"
-			  Condition="'$(RuntimeIdentifier)' == 'win-arm64'" />
+		<Copy SourceFiles="$(OutputPath)WebView2Loader.dll" DestinationFolder="$(OutputPath)runtimes\win-x86\native" Condition="'$(RuntimeIdentifier)' == 'win-x86'" />
+		<Copy SourceFiles="$(OutputPath)WebView2Loader.dll" DestinationFolder="$(OutputPath)runtimes\win-x64\native" Condition="'$(RuntimeIdentifier)' == 'win-x64'" />
+		<Copy SourceFiles="$(OutputPath)WebView2Loader.dll" DestinationFolder="$(OutputPath)runtimes\win-arm64\native" Condition="'$(RuntimeIdentifier)' == 'win-arm64'" />
 	</Target>
 </Project>
